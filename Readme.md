@@ -3,7 +3,7 @@ Three scripts to support creation of snapshots and incremental backups in a data
 
 ### 1. HttpSnapshotIncBackupContainerProducer
 - Script checks for modified/new blobs in a container of a storage account. In case it detects a new/modified blob, it creates the snapshot and adds a backup request message to the storage queue. Backup request message only contains metadata of the modified blob.
-- Script shall be run by Producer N that ingests data to container N in the datalake. Typically, this script shall be added as last step in the ADFv2 pipeline that ingest data to the container for the Producer. Only the Producer ADFv2 Managed Identity and this Azure Function Managed Identity have write access to this container. Blob triggers do not work in this scenario, since no events are fired when blobs are modified.
+- Script shall be run by Producer N that ingests data to container N in the datalake. Typically, this script shall be added as last step in the ADFv2 pipeline that ingests data to the container for the Producer. Only the Producer ADFv2 Managed Identity and this Azure Function Managed Identity have write access to this container. Blob triggers do not work in this scenario, since no events are fired when blobs are modified.
 
 ### 2. HttpSnapshotIncBackupStorageReconciliation
 - Script checks for modified/new blobs in a container of a storage account. In case it detects a new/modified blob, it creates the snapshot and adds a backup request message to the storage queue. This part is similar as previous script.
