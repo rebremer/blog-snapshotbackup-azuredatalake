@@ -3,7 +3,7 @@ Three scripts to support creation of snapshots and incremental backups in a data
 
 ### HttpSnapshotIncBackupContainerProducer
 - Script checks for modified blobs in the container of the Producer in the datalake. In case it detects a modified blob, it creates a snapshot of the modified blob and adds a backup request message to the storage queue. Backup request message only contains metadata of the modified blob.
-- Script shall be run by a Producer once writing is done to its container in the storage account. Typically, this script shall be added as last step in an ADFv2 pipeline that ingest data to the container of the Producer.
+- Script shall be run by a Producer once writing is done to its container in the storage account. Typically, this script shall be added as last step in the ADFv2 pipeline that ingest data to the container of the Producer.
 
 ### HttpSnapshotIncBackupStorageReconciliation
 - Script checks for blobs that have no snapshots or outdated snapshots in a storage account. In case it detects a blob without snapshot or an outdated snapshot, it creates the snapshot
