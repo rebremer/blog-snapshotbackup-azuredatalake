@@ -1,5 +1,5 @@
 ## Datalake snapshots and incremental backups to different storage account
-Three scripts to support creation of snapshots and incremental backups in a data Lake using principles in this article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. Notice that snapshots are not yet supported in ADLSgen2, but is expected to become available there, too. Scripts can be explained as follows:
+Three scripts to support creation of snapshots and incremental backups in a data Lake using principles in this article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. Notice that blob snapshots are not yet supported in ADLSgen2, but is expected to become available there, too. Scripts can be explained as follows:
 
 ### HttpSnapshotIncBackupContainerProducer
 - Script checks for modified blobs in the container of the Producer in the datalake. In case it detects a modified blob, it creates a snapshot of the modified blob and adds a backup request message to the storage queue. Backup request message only contains metadata of the modified blob.
