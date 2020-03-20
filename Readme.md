@@ -2,8 +2,8 @@
 Three scripts to support creation of snapshots and incremental backups in a data Lake using principles in this Microsoft article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. Notice that [blob snapshots](https://docs.microsoft.com/en-us/rest/api/storageservices/creating-a-snapshot-of-a-blob) are only supported in regular storage accounts and are not yet supported in ADLSgen2 (but is expected to become available in ADLSgen2, too). Scripts are therefore based on regular storage accounts and can be explained as follows:
 
 ### HttpSnapshotIncBackupContainerProducer
-- Script checks for modified blobs in the container of the Producer in the datalake. In case it detects a modified blob, it creates a snapshot of the modified blob and adds a backup request message to the storage queue. Backup request message only contains metadata of the modified blob.
-- Script shall be run by a Producer once writing is done to its container in the storage account. Typically, this script shall be added as last step in the ADFv2 pipeline that ingest data to the container of the Producer.
+- Script checks for modified blobs in a storage account container. In case it detects a modified blob, it creates a snapshot of the modified blob and adds a backup request message to the storage queue. Backup request message only contains metadata of the modified blob.
+- Script shall be run by Producer N that ingests data to container N in the datalake. Typically, this script shall be added as last step in the ADFv2 pipeline that ingest data to the container for the Producer. In this, only the Managed Identities of Producer N ADFv2 pipeline and this Azure Function have write access to Container N.
 
 ### HttpSnapshotIncBackupStorageReconciliation
 - Script checks for blobs that have no snapshots or outdated snapshots in a storage account. In case it detects a blob without snapshot or an outdated snapshot, it creates the snapshot
