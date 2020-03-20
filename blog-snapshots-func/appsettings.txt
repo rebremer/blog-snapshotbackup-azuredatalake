@@ -1,0 +1,12 @@
+az functionapp config appsettings set \
+    --name blog-snapshots-func <<your value>> \
+    --resource-group <<your value>> \
+    --settings par_adfv2_name=<<your value>> \
+               par_adfv2_pipeline_name=<<your value>> \
+               par_queue_name=<<your value>> \
+               par_resource_group_name=<<your value>> \
+               par_storage_account_key_queue=<<your value>> \ 
+               par_storage_account_name_backup=<<your value>> \ 
+               par_storage_account_name_source=<<your value>> \ 
+               par_subscription_id=<<your value>> \ 
+               par_storage_account_name_queue=<<your value>> \

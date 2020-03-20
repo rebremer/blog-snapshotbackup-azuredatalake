@@ -1,0 +1,12 @@
+{
+	"name": "source_binary_snapshot",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestSnapshot",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}

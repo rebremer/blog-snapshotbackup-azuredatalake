@@ -1,0 +1,25 @@
+{
+	"name": "blogtriggersnapshots",
+	"properties": {
+		"activities": [
+			{
+				"name": "Create snapshots",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://blog-snapshotaut-func.azurewebsites.net/api/HttpTrigger?code=jxuHOaRZBKGl3wshabCZWkd6hvHthD03uCyaNv1v9IVEzSddBaBTqQ==&storage_account=blogsnapshotautstor&container=feyenoord",
+					"method": "GET"
+				}
+			}
+		],
+		"annotations": []
+	}
+}

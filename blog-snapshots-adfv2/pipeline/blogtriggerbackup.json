@@ -1,0 +1,70 @@
+{
+	"name": "blogtriggerbackup",
+	"properties": {
+		"activities": [
+			{
+				"name": "copy to backup",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"preserve": [
+						"Attributes"
+					]
+				},
+				"inputs": [
+					{
+						"referenceName": "source_binary",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "backup_binary",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"container": {
+				"type": "string",
+				"defaultValue": "feyenoord"
+			},
+			"container_backup": {
+				"type": "string",
+				"defaultValue": "feyenoordbak"
+			},
+			"blob_name": {
+				"type": "string",
+				"defaultValue": "DemoReadyPart1test.zip"
+			},
+			"blob_name_backup": {
+				"type": "string",
+				"defaultValue": "DemoReadyPart1test.zip"
+			}
+		},
+		"annotations": []
+	}
+}

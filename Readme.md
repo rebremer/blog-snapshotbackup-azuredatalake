@@ -1,0 +1,15 @@
+## Datalake snapshots and incremental backups to different storage account
+Three scripts to support creation of snapshots and incremental backups in a data Lake using principles in this article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. Notice that snapshots are not yet supported in ADLSgen2, but is expected to become available there, too. Scripts can be explained as follows:
+
+### HttpSnapshotIncBackupContainerProducer
+- Script checks for modified blobs in the container of the Producer in the datalake. In case it detects a modified blob, it creates a snapshot of the modified blob and adds a backup request message to the storage queue. Backup request message only contains metadata of the modified blob.
+- Script shall be executed by a Producer once writing is done to its container in the storage account. Typically, this script shall be added as last step in an ADFv2 pipeline that ingest data to the container of the Producer.
+
+### HttpSnapshotIncBackupStorageReconciliation
+- Script checks for blobs without snapshots in a storage account. In case it detects a blob without snapshot, it creates the snapshot
+- Script also checks for blobs that are not yet in the backup storage account. In case it detects that the last version of the blob is not yet in the backup storage account, it adds a backup request message to the storage queue. Backup request message only contains metadata of the modified blob.
+- Script shall be run periodically to reconcile missing snapshots and/or missing backups (e.g. when producer script was not run or failed to run).
+
+### QueueCreateBlobBackupADFv2
+- Script that reads backup request messages from the storage queue. In case it detects a message, it calls an ADFv2 pipeline using REST to add the blob to the backup storage account. Using queue triggers and ADFv2, large files can be copied in parallel.
+- Script can be run in blob_lease mode which exclusively locks the file and guarantees the correct version of the file is added to backup storage account.

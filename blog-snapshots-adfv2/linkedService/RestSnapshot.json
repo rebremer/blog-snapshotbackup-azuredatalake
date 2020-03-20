@@ -1,0 +1,13 @@
+{
+	"name": "RestSnapshot",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://blogsnapshotautstor.blob.core.windows.net/feyenoord/testrb.txt?snapshot=2020-03-18T20:54:51.0705817Z",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "ManagedServiceIdentity",
+			"aadResourceId": "https://storage.azure.com/"
+		}
+	}
+}
