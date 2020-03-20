@@ -6,7 +6,7 @@ Three scripts to support creation of snapshots and incremental backups in a data
 - Script shall be run by Producer N that ingests data to container N in the datalake. Typically, this script shall be added as last step in the ADFv2 pipeline that ingest data to the container for the Producer. In this, only the Producer ADFv2 Managed Identity and the Azure Function Managed Identity have write access to this container.
 
 ### HttpSnapshotIncBackupStorageReconciliation
-- Script checks for blobs that have no snapshots or outdated snapshots in a storage account. In case it detects a blob without snapshot or an outdated snapshot, it creates the snapshot
+- Script checks for blobs that have no snapshots or outdated snapshots in a storage account. In case it detects a blob without snapshot or an outdated snapshot, it creates the snapshot.
 - Script also checks for blobs that are not yet in the backup storage account. In case it detects that the last version of the blob is not yet in the backup storage account, it adds a backup request message to the storage queue. Backup request message only contains metadata of the modified blob.
 - Script shall be run periodically by datalake admin team to reconcile missing snapshots and/or missing backups (e.g. when producer script was not run or failed to run).
 
