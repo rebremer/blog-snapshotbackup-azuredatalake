@@ -37,17 +37,8 @@ def main(msg: func.QueueMessage) -> None:
     blob_source = client_source.get_blob_client(container=container_source, blob=blob_name)
     create_container_backup_if_not_exists(client_backup, container_backup)
 
-    # Check if etag is not changed in the meantime
-    try:
-        blob_source_properties = blob_source.get_blob_properties()
-    except:
-        logging.info("blob " + blob_name + " in container " +  container_source + " does not exist anymore")
-        return
-
-    int_blob_source_etag = int(blob_source_properties.etag.replace("\"",""),16)
-    int_par_etag = int(blob_etag.replace("\"",""),16)
-    if int_blob_source_etag != int_par_etag:
-        logging.info("blob has already changed, old: " + str(blob_etag) + ", new: " + str(blob_source.get_blob_properties().etag))
+    # check if source blob is not changed
+    if source_blob_changed(blob_source, blob_name, container_source, blob_etag) == True:
         return
 
     # Start copying using ADFv2
@@ -79,7 +70,7 @@ def copy_with_lease(blob_source, client_backup, blob_backup, blob_etag):
     logging.info("0 seconds passed, blob {} being copied to {}".format(blob_backup.container_name, blob_backup.blob_name))
     while retry < MAX_LEASE_COPY_TIME_MINUTES * 4:
         time.sleep(15) # wait 15 seconds before next status update
-        blob_copy_finished = check_blob_exists(client_backup, blob_backup.container_name, blob_backup.blob_name)
+        blob_copy_finished = check_blob_copy_finished(client_backup, blob_backup.container_name, blob_backup.blob_name)
         if not blob_copy_finished:
             # File is not copied yet
             logging.info("{} seconds passed, blob {} being copied to {}".format(str(retry*15), blob_backup.container_name, blob_backup.blob_name))
@@ -124,7 +115,25 @@ def copy_adf_blob_source_backup(blob_source, client_backup, blob_backup, etag):
         logging.info("blob {} being copied to {}".format(blob_backup.container_name, blob_backup.blob_name))
         return False
 
-def check_blob_exists(client, container_name, blob_name):
+def source_blob_changed(blob_source, blob_name, container_source, blob_etag):
+    # Get properties of blob on source. In case of exception, blob does not exist anymore. Edge case.
+    try:
+        blob_source_properties = blob_source.get_blob_properties()
+    except:
+        logging.info("blob " + blob_name + " in container " +  container_source + " does not exist anymore")
+        return True
+
+    # Check if etag of blob is not changed
+    int_blob_source_etag = int(blob_source_properties.etag.replace("\"",""),16)
+    int_par_etag = int(blob_etag.replace("\"",""),16)
+    if int_blob_source_etag != int_par_etag:
+        logging.info("blob has already changed, old: " + str(blob_etag) + ", new: " + str(blob_source.get_blob_properties().etag))
+        # New etag has created new backup request, therefore quit this backup request
+        return True
+
+    return False
+
+def check_blob_copy_finished(client, container_name, blob_name):
     # Check if blob already exists
     # todo: see if this can be done without try except
     logging.info
