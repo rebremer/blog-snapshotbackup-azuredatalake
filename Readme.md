@@ -14,7 +14,7 @@ Three scripts to support creation of snapshots and incremental backups in a data
 - Script that reads backup request messages from the storage queue. In case it detects a message, it calls an ADFv2 pipeline using REST to copy the blob from the storage account to the backup storage account. Using queue triggers and ADFv2, large files can be copied in parallel.
 - Script can be run in blob_lease mode which exclusively locks the file and guarantees the correct version of the file is added to backup storage account. Whether or not using blob lease depends on a lot of factors (e.g. max lease time allowed, file size, number of ingestions jobs, immutability)
 
-### Summary
+### 4. Summary
 
 Working of scripts can be summarized in high level overview as follows:
 
