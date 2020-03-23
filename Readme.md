@@ -1,5 +1,9 @@
 ## Datalake snapshots and incremental backups to different storage account
-Three scripts to support creation of snapshots and incremental backups in a data Lake using principles in this Microsoft article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. Notice that [blob snapshots](https://docs.microsoft.com/en-us/rest/api/storageservices/creating-a-snapshot-of-a-blob) are only supported in regular storage accounts and are not yet supported in ADLSgen2 (but is expected to become available in ADLSgen2, too). Scripts are therefore based on regular storage accounts and can be explained as follows:
+Three scripts to support creation of snapshots and incremental backups in a data Lake using principles in this Microsoft article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. Notice that [blob snapshots](https://docs.microsoft.com/en-us/rest/api/storageservices/creating-a-snapshot-of-a-blob) are only supported in regular storage accounts and are not yet supported in ADLSgen2 (but is expected to become available in ADLSgen2, too). Scripts are therefore based on regular storage accounts. High level overview is depicted follows:
+
+![High level overview](https://github.com/rebremer/blog-snapshotbackup-azuredatalake/blob/master/images/high_level_overview.png "High level overview")
+
+Scripts can be explained as follows:
 
 ### 1. HttpSnapshotIncBackupContainerProducer
 - Script checks for modified/new blobs in a container of a storage account. In case it detects a modified/new blob, it creates a blob snapshot and adds a backup request message to the storage queue. Backup request message only contains metadata of the modified blob. Snapshot creation is a cheap operation O(1) and is done synchroneously by the script, whereas backup creation is an expensive operation and is done asynchroneously using queues and ADFv2. 
@@ -13,7 +17,3 @@ Three scripts to support creation of snapshots and incremental backups in a data
 ### 3. QueueCreateBlobBackupADFv2
 - Script that reads backup request messages from the storage queue. In case it detects a message, it calls an ADFv2 pipeline using REST to copy the blob from the storage account to the backup storage account. Using queue triggers and ADFv2, large files can be copied in parallel.
 - Script can be run in blob_lease mode which exclusively locks the file and guarantees the correct version of the file is added to backup storage account. Whether or not using blob lease depends on a lot of factors (e.g. max lease time allowed, file size, number of ingestions jobs, immutability)
-
-High level overview can be depicted as follows:
-
-![High level overview](https://github.com/rebremer/blog-snapshotbackup-azuredatalake/blob/master/images/high_level_overview.png "High level overview")
