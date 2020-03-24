@@ -7,7 +7,7 @@ To support data lake snapshots and incremental backup creation, three types of s
 
 - Event based script triggered by Producer when data is ingested/modified (see HttpSnapshotIncBackupContainerProducer as Azure Function)
 - Time based script triggered by Admin to reconcile missing snapshots/incremental backups (see HttpSnapshotIncBackupStorageReconciliation)
-- Queue trigger script that created incremental backups using ADFv2 (see QueueCreateBlobBackupADFv2)
+- Queue trigger script that creates incremental backups using ADFv2 (see QueueCreateBlobBackupADFv2)
 
 Notice that [blob snapshots](https://docs.microsoft.com/en-us/rest/api/storageservices/creating-a-snapshot-of-a-blob) are only supported in regular storage accounts and are not yet supported in ADLSgen2 (but is expected to become available in ADLSgen2, too). Scripts are therefore based on regular storage accounts, detailed explanation of the scripts can be found below.
 
