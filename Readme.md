@@ -1,5 +1,5 @@
 ## Datalake snapshots and incremental backups to different storage account
-Scripts to support creation of snapshots and incremental backups in a data Lake using principles in this Microsoft article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. High level overview can be depicted as follows:
+Scripts to support creation of snapshots and incremental backups in a data Lake using principles in this Microsoft article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. High level overview can be depicted as follows, see also my ![blog](https://towardsdatascience.com/how-to-create-snapshots-and-backups-of-your-azure-storage-e72bef58e0aa):
 
 ![High level overview](images/high_level_overview.png "High level overview")
 
