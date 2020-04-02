@@ -1,5 +1,5 @@
 ## Datalake snapshots and incremental backups to different storage account
-Scripts to support creation of snapshots and incremental backups in a data Lake using principles in this Microsoft article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. Explanation of project can also be found in my blog:
+Scripts to support creation of snapshots and incremental backups in a data Lake using principles in this Microsoft article: https://azure.microsoft.com/nl-nl/blog/microsoft-azure-block-blob-storage-backup/. End to end explanation of project can be found in my blog:
 
 - https://towardsdatascience.com/how-to-create-snapshots-and-backups-of-your-azure-storage-e72bef58e0aa
 
